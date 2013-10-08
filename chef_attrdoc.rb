@@ -48,7 +48,9 @@ lexed.each do |loc, token, content|
     end
   when :on_comment
     # ignore foodcritic comments
-    next if /^#\s+\:pragma\-foodcritic\: .*$/ =~ content
+    next if (
+      /^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
+      /^#\s?TODO.*$/ =~ content)
 
     if $comment
       $comment << content
