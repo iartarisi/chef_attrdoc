@@ -46,7 +46,7 @@ $groups = []
 $comment = false
 $code = false
 
-def finish_line
+def end_group
   unless $code.empty?
     $groups << [$code.join, $comment]
   end
@@ -58,7 +58,7 @@ lexed.each do |loc, token, content|
   case token
   when :on_ignored_nl
     if $comment
-      finish_line
+      end_group
     end
   when :on_comment
     # ignore foodcritic comments
