@@ -25,7 +25,7 @@ opt_parser = OptionParser.new do |opts|
   opts.banner = "Usage: chef_attrdoc.rb [options]"
 
   opts.on("-d", "--directory DIR", "Cookbook directory (defaults to current dir)") do |d|
-    options[:directory] = d
+    options[:dir] = d
   end
 
   opts.on("-f", "--file FILE", "Attributes file to parse") do |f|
@@ -38,7 +38,13 @@ opt_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-file = File.read(options[:file])
+if options[:file]
+  file = File.read(options[:file])
+elsif options[:dir]
+  file = File.read(File.join(options[:dir], "default.rb"))
+else
+  file = File.read(File.join("attributes", "default.rb"))
+end
 lexed = Ripper.lex(file)
 
 $groups = []
