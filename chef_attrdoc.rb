@@ -79,6 +79,12 @@ lexed.each do |loc, token, content|
   end
 end
 
+# when there are no newlines at the end of the file, we have to close
+# the code block manually
+unless $code.empty?
+  end_group
+end
+
 $groups.each do |code, doc|
   puts doc.gsub(/^# /, '')
   puts
