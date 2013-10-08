@@ -45,22 +45,40 @@ $groups = []
 
 $comment = false
 $code = false
+$newline = false
 
 def end_group
   unless $code.empty?
     $groups << [$code.join, $comment]
   end
-  $comment = false
-  $code = false
+  new_group
 end
 
+def new_group
+  $comment = false
+  $code = []
+  $newline = false
+end
+  
 lexed.each do |loc, token, content|
-  case token
+
+case token
   when :on_ignored_nl
-    if $comment
+    if $comment && $newline
       end_group
+    elsif $code.empty?
+      new_group
+    else
+      $newline = true
+      if $code
+        $code << content
+      end
     end
+  when :on_nl
+    $newline = true
+    $code << content if $code
   when :on_comment
+    $newline = false
     # ignore foodcritic comments
     next if (
       /^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
@@ -76,6 +94,7 @@ lexed.each do |loc, token, content|
     if $code
       $code << content
     end
+    $newline = false
   end
 end
 
