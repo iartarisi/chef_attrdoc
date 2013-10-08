@@ -26,7 +26,7 @@ end.parse!
 if options[:file]
   file = File.read(options[:file])
 elsif options[:dir]
-  file = File.read(File.join(options[:dir], "default.rb"))
+  file = File.read(File.join(options[:dir], "attributes", "default.rb"))
 else
   file = File.read(File.join("attributes", "default.rb"))
 end
