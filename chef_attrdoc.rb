@@ -8,14 +8,14 @@ require 'pp'
 file = File.read('default.rb')
 lexed = Ripper.lex(file)
 
-$lines = []
+$groups = []
 
 $comment = false
 $code = false
 
 def finish_line
   unless $code.empty?
-    $lines << [$code, $comment]
+    $groups << [$code, $comment]
   end
   $comment = false
   $code = false
@@ -48,7 +48,7 @@ lexed.each do |loc, token, content|
   end
 end
 
-$lines.each do |cod, doc|
+$groups.each do |cod, doc|
   puts "--------------"
   puts cod.join
   puts
