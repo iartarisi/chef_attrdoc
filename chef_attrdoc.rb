@@ -2,9 +2,29 @@
 
 # TODO work on newlines :on_nl for comments and for on_ident default
 
+require 'optparse'
 require 'ripper'
 
-file = File.read('default.rb')
+options = {}
+
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: chef_attrdoc.rb [options]"
+
+  opts.on("-d", "--directory DIR", "Cookbook directory (defaults to current dir)") do |d|
+    options[:directory] = d
+  end
+
+  opts.on("-f", "--file FILE", "Attributes file to parse") do |f|
+    options[:file] = f
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+file = File.read(options[:file])
 lexed = Ripper.lex(file)
 
 $groups = []
