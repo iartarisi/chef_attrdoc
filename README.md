@@ -8,7 +8,7 @@ chef-attrdoc groups attribute initialization lines together with the comments im
 
 chef-attrdoc currently ignores *TODO* and *foodcritic* comments.
 
-Usage:
+### Usage:
 
 ```
 # gem install chef_attrdoc
