@@ -45,76 +45,87 @@ elsif options[:dir]
 else
   file = File.read(File.join("attributes", "default.rb"))
 end
-lexed = Ripper.lex(file)
 
-$groups = []
+class AttributesFile
+  def initialize(content)
+    @lexed = Ripper.lex(content)
+    @groups = []
+    @comment = false
+    @code = false
+    @newline = false
 
-$comment = false
-$code = false
-$newline = false
-
-def end_group
-  unless $code.empty?
-    $groups << [$code.join, $comment]
+    self.parse
   end
-  new_group
-end
 
-def new_group
-  $comment = false
-  $code = []
-  $newline = false
-end
-  
-lexed.each do |loc, token, content|
+  def end_group
+    unless @code.empty?
+      @groups << [@code.join, @comment]
+    end
+    new_group
+  end
 
-case token
-  when :on_ignored_nl
-    if $comment && $newline
-      end_group
-    elsif $code.empty?
-      new_group
-    else
-      $newline = true
-      if $code
-        $code << content
+  def new_group
+    @comment = false
+    @code = []
+    @newline = false
+  end
+
+  def parse
+    @lexed.each do |loc, token, content|
+      case token
+      when :on_ignored_nl
+        if @comment && @newline
+          end_group
+        elsif @code.empty?
+          new_group
+        else
+          @newline = true
+          if @code
+            @code << content
+          end
+        end
+      when :on_nl
+        @newline = true
+        @code << content if @code
+      when :on_comment
+        @newline = false
+        # ignore foodcritic comments
+        next if (
+          /^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
+          /^#\s?TODO.*$/ =~ content)
+
+        if @comment
+          @comment << content
+        else
+          @comment = content
+          @code = []
+        end
+      else
+        if @code
+          @code << content
+        end
+        @newline = false
       end
     end
-  when :on_nl
-    $newline = true
-    $code << content if $code
-  when :on_comment
-    $newline = false
-    # ignore foodcritic comments
-    next if (
-      /^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
-      /^#\s?TODO.*$/ =~ content)
+    # when there are no newlines at the end of the file, we have to close
+    # the code block manually
+    unless @code.empty?
+      end_group
+    end
+  end
 
-    if $comment
-      $comment << content
-    else
-      $comment = content
-      $code = []
+  def to_s
+    @groups.each do |code, doc|
+      puts doc.gsub(/^# /, '')
+      puts
+      puts "```ruby"
+      puts code
+      puts "```"
+      puts
     end
-  else
-    if $code
-      $code << content
-    end
-    $newline = false
   end
 end
 
-# when there are no newlines at the end of the file, we have to close
-# the code block manually
-unless $code.empty?
-  end_group
-end
 
-$groups.each do |code, doc|
-  puts doc.gsub(/^# /, '')
-  puts
-  puts "```ruby"
-  puts code
-  puts "```"
-  puts
-end
+attrs = AttributesFile.new(file)
+attrs.to_s
