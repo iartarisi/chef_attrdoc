@@ -3,7 +3,6 @@
 # TODO work on newlines :on_nl for comments and for on_ident default
 
 require 'ripper'
-require 'pp'
 
 file = File.read('default.rb')
 lexed = Ripper.lex(file)
