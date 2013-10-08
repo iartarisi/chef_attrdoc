@@ -34,7 +34,7 @@ $code = false
 
 def finish_line
   unless $code.empty?
-    $groups << [$code, $comment]
+    $groups << [$code.join, $comment]
   end
   $comment = false
   $code = false
@@ -67,9 +67,9 @@ lexed.each do |loc, token, content|
   end
 end
 
-$groups.each do |cod, doc|
+$groups.each do |code, doc|
   puts "--------------"
-  puts cod.join
+  puts code
   puts
   puts doc
   puts
