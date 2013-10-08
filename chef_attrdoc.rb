@@ -68,9 +68,10 @@ lexed.each do |loc, token, content|
 end
 
 $groups.each do |code, doc|
-  puts "--------------"
-  puts code
+  puts doc.gsub(/^# /, '')
   puts
-  puts doc
+  puts "```ruby"
+  puts code
+  puts "```"
   puts
 end
