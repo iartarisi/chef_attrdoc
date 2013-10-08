@@ -1,0 +1,35 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+require 'chef_attrdoc'
+
+options = {}
+
+opt_parser = OptionParser.new do |opts|
+  opts.banner = "Usage: chef_attrdoc.rb [options]"
+
+  opts.on("-d", "--directory DIR", "Cookbook directory (defaults to current dir)") do |d|
+    options[:dir] = d
+  end
+
+  opts.on("-f", "--file FILE", "Attributes file to parse") do |f|
+    options[:file] = f
+  end
+
+  opts.on_tail("-h", "--help", "Show this message") do
+    puts opts
+    exit
+  end
+end.parse!
+
+if options[:file]
+  file = File.read(options[:file])
+elsif options[:dir]
+  file = File.read(File.join(options[:dir], "default.rb"))
+else
+  file = File.read(File.join("attributes", "default.rb"))
+end
+
+attrs = ChefAttrdoc::AttributesFile.new file
+attrs.to_s
