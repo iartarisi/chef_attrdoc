@@ -72,10 +72,6 @@ lexed.each do |loc, token, content|
       $comment = content
       $code = []
     end
-  when :on_op
-    if content == "=" && $code  # if $code is false, we're at the beginning of the file
-      $code << "="
-    end
   else
     if $code
       $code << content
