@@ -49,7 +49,7 @@ module ChefAttrdoc
         when :on_ignored_nl
           if @comment && @newline
             end_group
-          elsif @code.empty?
+          elsif !@code || @code.empty?
             new_group
           else
             @newline = true
@@ -82,7 +82,7 @@ module ChefAttrdoc
       end
       # when there are no newlines at the end of the file, we have to close
       # the code block manually
-      unless @code.empty?
+      if @code && !@code.empty?
         end_group
       end
     end
