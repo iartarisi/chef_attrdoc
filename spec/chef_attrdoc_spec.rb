@@ -19,12 +19,11 @@ require 'chef_attrdoc'
 
 
 describe ChefAttrdoc do
-  ["TODO bar", "XXX foo bar", ":pragma-foodcritic: ~FC024 - won't fix this"].each do |comm|
-    it "should ignore #{comm} comment" do
+  ["TODO bar", "XXX foo bar", "NOTE(me) nasty bug",
+    ":pragma-foodcritic: ~FC024 - won't fix this"].each do |comm|
+    it "should ignore \"#{comm}\" comment" do
       text = <<END
 # #{comm}
-default[foo] = 'bar'
-
 # good comment
 default[good] = 'comment'
 END
