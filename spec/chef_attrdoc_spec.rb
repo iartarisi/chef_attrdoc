@@ -53,7 +53,7 @@ END
           "# second block\n"]])
   end
 
-  it "does not ignore code without comments" do
+  it "ignores code without comments" do
 text = <<END
 # first block
 default[foo] = 'bar'
