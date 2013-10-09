@@ -1,4 +1,3 @@
-#!/usr/bin/env ruby
 # -*- coding: utf-8 -*-
 
 # Copyright 2013, Ionuț Arțăriși <ionut@artarisi.eu>
@@ -20,6 +19,9 @@ require 'ripper'
 
 module ChefAttrdoc
   class AttributesFile
+
+    attr_reader :groups
+
     def initialize(content)
       @lexed = Ripper.lex(content)
       @groups = []
@@ -62,10 +64,7 @@ module ChefAttrdoc
           @code << content if @code
         when :on_comment
           @newline = false
-          # ignore foodcritic comments
-          next if (
-            /^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
-            /^#\s?TODO.*$/ =~ content)
+          next if ignored_comments(content)
 
           if @comment
             @comment << content
@@ -100,3 +99,7 @@ module ChefAttrdoc
   end
 end
 
+def ignored_comments(content)
+  (/^#\s+\:pragma\-foodcritic\: .*$/ =~ content ||
+    /^#\s?(TODO|XXX|NOTE).*$/ =~ content)
+end
