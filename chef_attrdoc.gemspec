@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'chef_attrdoc/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "chef_attrdoc"
+  spec.name          = "chef-attrdoc"
   spec.version       = ChefAttrdoc::VERSION
   spec.authors       = ["Ionuț Arțăriși"]
   spec.email         = ["iartarisi@suse.cz"]
