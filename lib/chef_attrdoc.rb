@@ -87,13 +87,27 @@ module ChefAttrdoc
     end
 
     def to_s
+      strings = []
       @groups.each do |code, doc|
-        puts doc.gsub(/^# /, '')
-        puts
-        puts "```ruby"
-        puts code
-        puts "```"
-        puts
+        strings << doc.gsub(/^# /, '')
+        strings << "\n"
+        strings << "```ruby"
+        strings << code
+        strings << "```\n"
+      end
+      strings.join
+    end
+
+    def to_readme(readme)
+      File.open(readme, File::RDWR) do |f|
+        # XXX find a cleaner way and do this in one step
+        updated = f.read.gsub(/(.*\nAttributes\s*=+\n)(.+?)(\n\w+\s*\n=+.*)/m,
+          '\1CHEF_ATTRDOC_UPDATING_TEMPLATE\2')
+        updated.sub!('CHEF_ATTRDOC_UPDATING_TEMPLATE', self.to_s)
+        f.rewind
+        f.write(updated)
+        f.flush
+        f.truncate(f.pos)
       end
     end
   end

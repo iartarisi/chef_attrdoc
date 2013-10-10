@@ -13,6 +13,11 @@ opt_parser = OptionParser.new do |opts|
     options[:dir] = d
   end
 
+  options[:readme] = "README.md"
+  opts.on("-r", "--readme README",
+    "Readme file name, relative to DIR, defaults to README.md must be markdown") do |r|
+    options[:readme] = readme
+  end
 
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
@@ -22,9 +27,12 @@ end.parse!
 
 if options[:dir]
   file = File.read(File.join(options[:dir], "attributes", "default.rb"))
+  readme = File.join(options[:dir], options[:readme])
 else
   file = File.read(File.join("attributes", "default.rb"))
+  readme = options[:readme]
 end
 
+
 attrs = ChefAttrdoc::AttributesFile.new file
-attrs.to_s
+attrs.to_readme readme
