@@ -12,8 +12,10 @@ chef-attrdoc currently ignores *TODO* and *foodcritic* comments.
 
 ```
 # gem install chef_attrdoc
-# attr_doc -d ~/cookbooks/mycookbook
+# chef-attrdoc -d ~/cookbooks/mycookbook
 ```
+
+`chef-attrdoc` will try to find an Attributes heading in the README.md file in that directory and replace its contents with the generated `attributes/default.rb` documentation.
 
 ### Examples
 
