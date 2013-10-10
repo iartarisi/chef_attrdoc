@@ -13,9 +13,6 @@ opt_parser = OptionParser.new do |opts|
     options[:dir] = d
   end
 
-  opts.on("-f", "--file FILE", "Attributes file to parse") do |f|
-    options[:file] = f
-  end
 
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
@@ -23,9 +20,7 @@ opt_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:file]
-  file = File.read(options[:file])
-elsif options[:dir]
+if options[:dir]
   file = File.read(File.join(options[:dir], "attributes", "default.rb"))
 else
   file = File.read(File.join("attributes", "default.rb"))
