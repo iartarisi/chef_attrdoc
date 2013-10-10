@@ -7,15 +7,12 @@ require 'chef_attrdoc'
 options = {}
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = "Usage: chef_attrdoc.rb [options]"
-
-  opts.on("-d", "--directory DIR", "Cookbook directory (defaults to current dir)") do |d|
-    options[:dir] = d
-  end
+  opts.banner = "Usage: chef_attrdoc.rb [DIR] [options]\n"
+  opts.banner << "DIR - cookbook directory - defaults to the current directory\n\n"
 
   options[:readme] = "README.md"
   opts.on("-r", "--readme README",
-    "Readme file name, relative to DIR, defaults to README.md must be markdown") do |r|
+    "Readme file name, defaults to README.md must be markdown") do |r|
     options[:readme] = readme
   end
 
@@ -25,14 +22,13 @@ opt_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-if options[:dir]
-  file = File.read(File.join(options[:dir], "attributes", "default.rb"))
-  readme = File.join(options[:dir], options[:readme])
-else
+if ARGV.empty?
   file = File.read(File.join("attributes", "default.rb"))
-  readme = options[:readme]
+else
+  file = File.read(File.join(ARGV[1], "attributes", "default.rb"))
 end
 
+readme = options[:readme]
 
 attrs = ChefAttrdoc::AttributesFile.new file
 attrs.to_readme readme
