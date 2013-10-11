@@ -107,25 +107,26 @@ when "suse"
   }
 END
     ca = ChefAttrdoc::AttributesFile.new(text)
-  expect(ca.groups).to eq(
-    [["case platform\n"\
-      "when \"fedora\", \"redhat\", \"centos\" "\
-      "  default[\"openstack\"][\"identity\"][\"user\"] = \"keystone\"\n"\
-      "  default[\"openstack\"][\"identity\"][\"group\"] = \"keystone\"\n"\
-      "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
-      "    \"memcache_python_packages\" => [ \"python-memcached\" ],\n"\
-      "    \"keystone_packages\" => [ \"openstack-keystone\" ],\n"\
-      "    \"keystone_process_name\" => \"keystone-all\",\n"\
-      "    \"package_options\" => \"\"\n"\
-      "  }\n"\
-      "when \"suse\"\n"\
-      "  default[\"openstack\"][\"identity\"][\"user\"] = \"openstack-keystone\"\n"\
-      "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
-      "    \"mysql_python_packages\" => [ \"python-mysql\" ],\n"\
-      "    \"memcache_python_packages\" => [ \"python-python-memcached\" ],\n"\
-      "    \"keystone_process_name\" => \"keystone-all\",\n"\
-      "    \"package_options\" => \"\"\n"\
-      "  }\n",
-      "# platform specific attributes\n"]])
+    expect(ca.groups).to eq(
+      [["case platform\n"\
+        "when \"fedora\", \"redhat\", \"centos\" "\
+        "  default[\"openstack\"][\"identity\"][\"user\"] = \"keystone\"\n"\
+        "  default[\"openstack\"][\"identity\"][\"group\"] = \"keystone\"\n"\
+        "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
+        "    \"memcache_python_packages\" => [ \"python-memcached\" ],\n"\
+        "    \"keystone_packages\" => [ \"openstack-keystone\" ],\n"\
+        "    \"keystone_process_name\" => \"keystone-all\",\n"\
+        "    \"package_options\" => \"\"\n"\
+        "  }\n"\
+        "when \"suse\"\n"\
+        "  default[\"openstack\"][\"identity\"][\"user\"] = \"openstack-keystone\"\n"\
+        "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
+        "    \"mysql_python_packages\" => [ \"python-mysql\" ],\n"\
+        "    \"memcache_python_packages\" => [ \"python-python-memcached\" ],\n"\
+        "    \"keystone_process_name\" => \"keystone-all\",\n"\
+        "    \"package_options\" => \"\"\n"\
+        "  }\n",
+        "# platform specific attributes\n"]])
+  end
   end
 end
