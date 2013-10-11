@@ -26,7 +26,7 @@ module ChefAttrdoc
       @lexed = Ripper.lex(content)
       @groups = []
       @comment = false
-      @code = false
+      @code = []
       @newline = false
 
       self.parse
@@ -51,7 +51,7 @@ module ChefAttrdoc
         when :on_ignored_nl
           if @comment && @newline
             end_group
-          elsif !@code || @code.empty?
+          elsif @code.empty?
             new_group
           else
             @newline = true
@@ -81,7 +81,7 @@ module ChefAttrdoc
       end
       # when there are no newlines at the end of the file, we have to close
       # the code block manually
-      if @code && !@code.empty?
+      unless @code.empty?
         end_group
       end
     end
