@@ -13,7 +13,7 @@ chef-attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
 ### Usage:
 
 ```
-# gem install chef_attrdoc
+# gem install chef-attrdoc
 # chef-attrdoc ~/cookbooks/mycookbook
 ```
 
