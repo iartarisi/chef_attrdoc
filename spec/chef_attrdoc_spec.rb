@@ -128,5 +128,4 @@ END
         "  }\n",
         "# platform specific attributes\n"]])
   end
-  end
 end
