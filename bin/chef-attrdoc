@@ -22,13 +22,18 @@ opt_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-if ARGV.empty?
-  file = File.read(File.join("attributes", "default.rb"))
-else
-  file = File.read(File.join(ARGV[1], "attributes", "default.rb"))
+file_path = ["attributes", "default.rb"]
+file_path.unshift ARGV[0] unless ARGV.empty?
+file_path = File.join file_path
+
+begin
+  contents = IO.read(file_path)
+rescue Exception => e
+  puts e.message
+  exit
 end
 
 readme = options[:readme]
 
-attrs = ChefAttrdoc::AttributesFile.new file
+attrs = ChefAttrdoc::AttributesFile.new contents
 attrs.to_readme readme
