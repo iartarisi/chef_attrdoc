@@ -128,4 +128,26 @@ END
         "  }\n",
         "# platform specific attributes\n"]])
   end
+
+  it "handles comments over several lines which include blank lines" do
+    text = <<END
+# my comment
+#
+# continued comment
+#
+default["some"]["actual"]["code"] = 42
+END
+    ca = ChefAttrdoc::AttributesFile.new(text)
+    expect(ca.to_s).to eq(<<-END)
+my comment
+
+continued comment
+
+
+```ruby
+default["some"]["actual"]["code"] = 42
+```
+
+END
+  end
 end

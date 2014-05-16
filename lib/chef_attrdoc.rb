@@ -89,11 +89,11 @@ module ChefAttrdoc
     def to_s
       strings = []
       @groups.each do |code, doc|
-        strings << doc.gsub(/^# /, '')
+        strings << doc.gsub(/^#[[:blank:]]*/, '')
         strings << "\n"
-        strings << "```ruby"
+        strings << "```ruby\n"
         strings << code
-        strings << "```\n"
+        strings << "```\n\n"
       end
       strings.join
     end
