@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2013, Ionuț Arțăriși <ionut@artarisi.eu>
+# Copyright 2013-2014, Ionuț Arțăriși <ionut@artarisi.eu>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@ require 'chef_attrdoc'
 describe ChefAttrdoc do
   ["TODO bar", "XXX foo bar", "NOTE(me) nasty bug",
     ":pragma-foodcritic: ~FC024 - won't fix this"].each do |comm|
-    it "should ignore \"#{comm}\" comment" do
+    it "ignores \"#{comm}\" comment" do
       text = <<END
 # #{comm}
 # good comment
@@ -54,7 +54,7 @@ END
   end
 
   it "ignores code without comments" do
-text = <<END
+    text = <<END
 # first block
 default[foo] = 'bar'
 default[bar] = 'baz'
