@@ -12,7 +12,7 @@ opt_parser = OptionParser.new do |opts|
 
   options[:readme] = "README.md"
   opts.on("-r", "--readme README",
-    "Readme file name, defaults to README.md must be markdown") do |r|
+    "Readme file name; defaults to ./README.md; must be Markdown") do |readme|
     options[:readme] = readme
   end
 
