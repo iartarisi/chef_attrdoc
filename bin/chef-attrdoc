@@ -16,6 +16,10 @@ opt_parser = OptionParser.new do |opts|
     options[:readme] = readme
   end
 
+  opts.on_tail("-d", "--debug", "Show tracebacks on errors") do |debug|
+    options[:debug] = debug
+  end
+
   opts.on_tail("-h", "--help", "Show this message") do
     puts opts
     exit
@@ -35,5 +39,13 @@ end
 
 readme = options[:readme]
 
-attrs = ChefAttrdoc::AttributesFile.new contents
-attrs.to_readme readme
+begin
+  attrs = ChefAttrdoc::AttributesFile.new contents
+  attrs.to_readme readme
+rescue Exception => e
+  if options[:debug]
+    raise
+  else
+    puts e.message
+  end
+end
