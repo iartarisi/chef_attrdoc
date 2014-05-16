@@ -16,6 +16,11 @@ opt_parser = OptionParser.new do |opts|
     options[:readme] = readme
   end
 
+  opts.on("-s", "--stdout",
+    "Write output to stdout instead of the cookbook's README file") do |stdout|
+    options[:stdout] = stdout
+  end
+
   opts.on_tail("-d", "--debug", "Show tracebacks on errors") do |debug|
     options[:debug] = debug
   end
@@ -37,11 +42,13 @@ rescue Exception => e
   exit
 end
 
-readme = options[:readme]
-
 begin
   attrs = ChefAttrdoc::AttributesFile.new contents
-  attrs.to_readme readme
+  if options[:stdout]
+    puts attrs.to_s
+  else
+    attrs.to_readme options[:readme]
+  end
 rescue Exception => e
   if options[:debug]
     raise
