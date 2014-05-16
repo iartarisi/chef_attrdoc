@@ -64,7 +64,18 @@ module ChefAttrdoc
           @code << content if @code
         when :on_comment
           @newline = false
-          next if ignored_comments(content)
+          if ignored_comments(content)
+            # inline comments
+            # go back to the existing code and remove the trailing
+            # whitespace, but give it the newline which the lexer
+            # considers part of the comment
+            if !@code.empty?
+              @code[-1].strip!
+              @code << "\n"
+            end
+
+            next
+          end
 
           if @comment
             @comment << content

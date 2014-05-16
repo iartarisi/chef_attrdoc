@@ -155,4 +155,21 @@ default["some"]["actual"]["code"] = 42
 
 END
   end
+
+  it "discards ignored inline comments" do
+    ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
+# my comment
+default["ignored"]["thing"] = 33  # TODO(tommy) an ignored inline comment
+default["foo"] = "bar"
+INPUT
+    expect(ca.to_s).to eq(<<-OUTPUT)
+my comment
+
+```ruby
+default["ignored"]["thing"] = 33
+default["foo"] = "bar"
+```
+
+OUTPUT
+  end
 end
