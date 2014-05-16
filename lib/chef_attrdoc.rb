@@ -33,7 +33,7 @@ module ChefAttrdoc
     end
 
     def end_group
-      unless @code.empty?
+      unless @code.empty? || !@comment
         @groups << [@code.join, @comment]
       end
       new_group
@@ -46,9 +46,10 @@ module ChefAttrdoc
     end
 
     def parse
-      @lexed.each do |loc, token, content|
+      @lexed.each do |(lineno, column), token, content|
         case token
         when :on_ignored_nl
+          # end a group if we've reached an empty line after a comment
           if @comment && @newline
             end_group
           elsif @code.empty?
@@ -92,7 +93,7 @@ module ChefAttrdoc
               # inline comments
               @code << content
             end
-          else
+          elsif column == 0
             @comment = content
             @code = []
           end

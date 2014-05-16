@@ -215,4 +215,22 @@ default['foo'] = 'bar'
 
 OUTPUT
   end
+
+  it "ignores inline comments on code with no leading comments" do
+    ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
+# something good
+foo = bar
+
+default['something'] = 'bad' # foo
+default['just']['more'] = 'code'
+INPUT
+    expect(ca.to_s).to eq(<<-OUTPUT)
+something good
+
+```ruby
+foo = bar
+```
+
+OUTPUT
+  end
 end
