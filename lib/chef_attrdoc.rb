@@ -78,7 +78,15 @@ module ChefAttrdoc
           end
 
           if @comment
-            @comment << content
+            # since we can only have one comment per block (and we put
+            # that at the top, before the code), keep appending to that
+            # until the code starts. When the code starts, just leave
+            # comments where we find them, in the code.
+            if @code.empty?
+              @comment << content
+            else
+              @code << content
+            end
           else
             @comment = content
             @code = []
