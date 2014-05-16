@@ -88,7 +88,7 @@ END
     text = <<END
 # platform specific attributes
 case platform
-when "fedora", "redhat", "centos" # :pragma-foodcritic: ~FC024 - won't fix this
+when "fedora", "redhat", "centos"
   default["openstack"]["identity"]["user"] = "keystone"
   default["openstack"]["identity"]["group"] = "keystone"
   default["openstack"]["identity"]["platform"] = {
@@ -107,26 +107,31 @@ when "suse"
   }
 END
     ca = ChefAttrdoc::AttributesFile.new(text)
-    expect(ca.groups).to eq(
-      [["case platform\n"\
-        "when \"fedora\", \"redhat\", \"centos\" "\
-        "  default[\"openstack\"][\"identity\"][\"user\"] = \"keystone\"\n"\
-        "  default[\"openstack\"][\"identity\"][\"group\"] = \"keystone\"\n"\
-        "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
-        "    \"memcache_python_packages\" => [ \"python-memcached\" ],\n"\
-        "    \"keystone_packages\" => [ \"openstack-keystone\" ],\n"\
-        "    \"keystone_process_name\" => \"keystone-all\",\n"\
-        "    \"package_options\" => \"\"\n"\
-        "  }\n"\
-        "when \"suse\"\n"\
-        "  default[\"openstack\"][\"identity\"][\"user\"] = \"openstack-keystone\"\n"\
-        "  default[\"openstack\"][\"identity\"][\"platform\"] = {\n"\
-        "    \"mysql_python_packages\" => [ \"python-mysql\" ],\n"\
-        "    \"memcache_python_packages\" => [ \"python-python-memcached\" ],\n"\
-        "    \"keystone_process_name\" => \"keystone-all\",\n"\
-        "    \"package_options\" => \"\"\n"\
-        "  }\n",
-        "# platform specific attributes\n"]])
+    expect(ca.to_s).to eq(<<-END)
+platform specific attributes
+
+```ruby
+case platform
+when "fedora", "redhat", "centos"
+  default["openstack"]["identity"]["user"] = "keystone"
+  default["openstack"]["identity"]["group"] = "keystone"
+  default["openstack"]["identity"]["platform"] = {
+    "memcache_python_packages" => [ "python-memcached" ],
+    "keystone_packages" => [ "openstack-keystone" ],
+    "keystone_process_name" => "keystone-all",
+    "package_options" => ""
+  }
+when "suse"
+  default["openstack"]["identity"]["user"] = "openstack-keystone"
+  default["openstack"]["identity"]["platform"] = {
+    "mysql_python_packages" => [ "python-mysql" ],
+    "memcache_python_packages" => [ "python-python-memcached" ],
+    "keystone_process_name" => "keystone-all",
+    "package_options" => ""
+  }
+```
+
+END
   end
 
   it "handles comments over several lines which include blank lines" do
