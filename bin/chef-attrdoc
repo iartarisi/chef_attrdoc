@@ -32,7 +32,12 @@ opt_parser = OptionParser.new do |opts|
 end.parse!
 
 file_path = ["attributes", "default.rb"]
-file_path.unshift ARGV[0] unless ARGV.empty?
+unless ARGV.empty?
+  file_path.unshift ARGV[0]
+  unless options[:stdout]
+    options[:readme] = File.join(ARGV[0], options[:readme])
+  end
+end
 file_path = File.join file_path
 
 begin
