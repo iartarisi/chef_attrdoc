@@ -55,13 +55,11 @@ module ChefAttrdoc
             new_group
           else
             @newline = true
-            if @code
-              @code << content
-            end
+            @code << content
           end
         when :on_nl
           @newline = true
-          @code << content if @code
+          @code << content
         when :on_comment
           if ignored_comments(content)
             # inline comments
@@ -101,9 +99,7 @@ module ChefAttrdoc
 
           @newline = false
         else
-          if @code
-            @code << content
-          end
+          @code << content
           @newline = false
         end
       end
