@@ -189,4 +189,30 @@ default["foo"] = "bar"
 
 OUTPUT
   end
+
+  it "ignores comments tailing a code block" do
+    ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
+# describe apt-components
+default['openstack']['apt']['components'] = ["precise-updates/...", 'main']
+# This comment and the code below should be ignored
+# default['openstack']['apt']['components'] = [ '%codename%-proposed/%release%', 'main' ]
+
+# until here, this is good again
+default['foo'] = 'bar'
+INPUT
+    expect(ca.to_s).to eq(<<-OUTPUT)
+describe apt-components
+
+```ruby
+default['openstack']['apt']['components'] = ["precise-updates/...", 'main']
+```
+
+until here, this is good again
+
+```ruby
+default['foo'] = 'bar'
+```
+
+OUTPUT
+  end
 end

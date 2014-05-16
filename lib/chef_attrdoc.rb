@@ -63,7 +63,6 @@ module ChefAttrdoc
           @newline = true
           @code << content if @code
         when :on_comment
-          @newline = false
           if ignored_comments(content)
             # inline comments
             # go back to the existing code and remove the trailing
@@ -78,19 +77,29 @@ module ChefAttrdoc
           end
 
           if @comment
-            # since we can only have one comment per block (and we put
-            # that at the top, before the code), keep appending to that
-            # until the code starts. When the code starts, just leave
-            # comments where we find them, in the code.
+            # After the code has started, leave the inline comments
+            # where we found them, but ignore the ones below the
+            # code. Those are usually garbage. We do this by ending the
+            # current group when we encounter them.
+            if !@code.empty? && @newline
+              end_group
+              @comment = ''
+            end
+            # Since we can only have one comment per block (which we put
+            # at the top, before the code), keep appending to that
+            # until the code starts.
             if @code.empty?
               @comment << content
             else
+              # inline comments
               @code << content
             end
           else
             @comment = content
             @code = []
           end
+
+          @newline = false
         else
           if @code
             @code << content
