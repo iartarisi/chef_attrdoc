@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+require_relative 'spec_helper'
+
 require 'chef_attrdoc'
 
 
