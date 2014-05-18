@@ -48,6 +48,9 @@ module ChefAttrdoc
     def parse
       @lexed.each do |(lineno, column), token, content|
         case token
+        # Ignored newlines occur when a newline is encountered, but
+        # the statement that was expressed on that line was not
+        # completed on that line.
         when :on_ignored_nl
           # end a group if we've reached an empty line after a comment
           if @comment && @newline
@@ -58,6 +61,7 @@ module ChefAttrdoc
             @newline = true
             @code << content
           end
+        # This is the first thing that exists on a new line–NOT the last!
         when :on_nl
           @newline = true
           @code << content
