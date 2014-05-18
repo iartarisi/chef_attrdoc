@@ -19,6 +19,8 @@ chef-attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
 
 `chef-attrdoc` will try to find an Attributes heading in the README.md file in that directory and replace its contents with the generated `attributes/default.rb` documentation.
 
+`chef-attrdoc` uses ruby's stdlib `ripper` module and so does not have any dependencies.
+
 ### Examples
 
 Here are some example outputs from openstack chef cookbooks:
