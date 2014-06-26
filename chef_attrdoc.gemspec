@@ -4,13 +4,13 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'chef_attrdoc/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "chef-attrdoc"
+  spec.name          = "chef_attrdoc"
   spec.version       = ChefAttrdoc::VERSION
   spec.authors       = ["Ionuț Arțăriși"]
-  spec.email         = ["iartarisi@suse.cz"]
-  spec.description   = %q{Generate README.md docs from chef cookbook attributesf file}
-  spec.summary       = %q{Generate README.md docs from chef cookbook attributesf file}
-  spec.homepage      = "https://github.com/mapleoin/chef-attrdoc"
+  spec.email         = ["ionut@artarisi.eu"]
+  spec.description   = %q{Generate README.md docs from Chef cookbook attributes files}
+  spec.summary       = %q{Generate README.md docs from Chef cookbook attributes files}
+  spec.homepage      = "https://github.com/mapleoin/chef_attrdoc"
   spec.license       = "Apache"
 
   spec.files         = `git ls-files`.split($/)
