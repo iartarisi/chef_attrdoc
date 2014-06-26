@@ -33,7 +33,7 @@ module ChefAttrdoc
     end
 
     def end_group
-      unless @code.empty? || !@comment
+      if @comment
         @groups << [@code.join, @comment]
       end
       new_group
@@ -55,8 +55,6 @@ module ChefAttrdoc
           # end a group if we've reached an empty line after a comment
           if @comment && @newline
             end_group
-          elsif @code.empty?
-            new_group
           else
             @newline = true
             @code << content
@@ -120,9 +118,11 @@ module ChefAttrdoc
       @groups.each do |code, doc|
         strings << doc.gsub(/^#[[:blank:]]*/, '')
         strings << "\n"
-        strings << "```ruby\n"
-        strings << code
-        strings << "```\n\n"
+        unless /\A[[:space:]]*\z/.match code
+          strings << "```ruby\n"
+          strings << code
+          strings << "```\n\n"
+        end
       end
       strings.join
     end
