@@ -115,6 +115,10 @@ module ChefAttrdoc
 
     def to_s
       strings = []
+      # ignore the starting comments in a file, these are usually
+      # shebangs, copyright statements, encoding declarations etc.
+      @groups = @groups.drop_while{|code, doc| /\A[[:space:]]*\z/.match code}
+
       @groups.each do |code, doc|
         strings << doc.gsub(/^#[[:blank:]]*/, '')
         strings << "\n"

@@ -69,15 +69,24 @@ END
   end
 
   it "ignores the first comments in a file" do
-    text = <<END
+    ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
+#!/she/bang
+
 # Copyright
 # foo
 
 # this is important
 default[foo] = 'bar'
-END
-    ca = ChefAttrdoc::AttributesFile.new(text)
-    expect(ca.groups).to eq([["default[foo] = 'bar'\n", "# this is important\n"]])
+INPUT
+
+    expect(ca.to_s).to eq(<<-OUTPUT)
+this is important
+
+```ruby
+default[foo] = 'bar'
+```
+
+OUTPUT
   end
 
   it "handles platform group with lots of branches and hashes" do
