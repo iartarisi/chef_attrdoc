@@ -32,7 +32,7 @@ END
     end
   end
 
-  it "groups comments and several lines of code together" do
+  it 'groups comments and several lines of code together' do
     text = <<END
 # first block
 default[foo] = 'bar'
@@ -51,7 +51,7 @@ END
           "# second block\n"]])
   end
 
-  it "ignores code without comments" do
+  it 'ignores code without comments' do
     text = <<END
 # first block
 default[foo] = 'bar'
@@ -68,7 +68,7 @@ END
         ["node.set[baz] = 'qux'\n", "# second block\n"]])
   end
 
-  it "ignores the first comments in a file" do
+  it 'ignores the first comments in a file' do
     ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
 #!/she/bang
 
@@ -89,7 +89,7 @@ default[foo] = 'bar'
 OUTPUT
   end
 
-  it "handles platform group with lots of branches and hashes" do
+  it 'handles platform group with lots of branches and hashes' do
     text = <<END
 # platform specific attributes
 case platform
@@ -139,7 +139,7 @@ when "suse"
 END
   end
 
-  it "handles comments over several lines which include blank lines" do
+  it 'handles comments over several lines which include blank lines' do
     text = <<END
 # my comment
 #
@@ -161,7 +161,7 @@ default["some"]["actual"]["code"] = 42
 END
   end
 
-  it "keeps good inline comments" do
+  it 'keeps good inline comments' do
     ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
 # my comment
 default["ignored"]["thing"] = 33  # a useful inline comment
@@ -178,7 +178,7 @@ default["foo"] = "bar"
 OUTPUT
   end
 
-  it "discards ignored inline comments" do
+  it 'discards ignored inline comments' do
     ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
 # my comment
 default["ignored"]["thing"] = 33  # TODO(tommy) an ignored inline comment
@@ -195,7 +195,7 @@ default["foo"] = "bar"
 OUTPUT
   end
 
-  it "ignores inline comments on code with no leading comments" do
+  it 'ignores inline comments on code with no leading comments' do
     ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
 # something good
 foo = bar
@@ -213,7 +213,7 @@ foo = bar
 OUTPUT
   end
 
-  it "uses isolated comment blocks" do
+  it 'uses isolated comment blocks' do
     ca = ChefAttrdoc::AttributesFile.new(<<-INPUT)
 # foo bar
 foo = bar
