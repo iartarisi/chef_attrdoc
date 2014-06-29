@@ -136,7 +136,7 @@ module ChefAttrdoc
         # XXX find a cleaner way and do this in one step
         content = f.read
         if content =~ /\nAttributes\s*=+\s*\n/
-          updated = content.gsub(/(.*\nAttributes\s*=+\s*\n)(.+?)(\n\w+\s*\n=+.*)/m,
+          updated = content.gsub(/(.*\nAttributes\s*=+\s*\n)(?m:.+?)(\n.+\s*\n=+.*)/,
             '\1CHEF_ATTRDOC_UPDATING_TEMPLATE\3')
         elsif content =~ /\n[#]+\s*Attributes\s*\n/
           updated = content.gsub(/(?<before>.*\n(?<header>[#]+)\s*Attributes\s*\n)(.+?)(?<after>\n\k<header>\s*\w+\s*\n.*)/m,

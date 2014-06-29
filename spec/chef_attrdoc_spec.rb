@@ -242,4 +242,26 @@ foo = bar
 
 OUTPUT
   end
+
+  describe '#to_readme' do
+    it 'handles an Attributes section followed by a multiword header' do
+      readme = double('file').as_null_object
+      allow(readme).to receive(:read).and_return(<<-README)
+
+Attributes
+==========
+my attributes
+
+are nice
+
+Another header
+==============
+README
+      ca = ChefAttrdoc::AttributesFile.new('')
+      allow(ca).to receive(:to_s).and_return('foo')
+      allow(::File).to receive(:open).and_yield(readme)
+      expect(readme).to receive(:write).with("\nAttributes\n==========\nfoo\n")
+      ca.to_readme('filename')
+    end
+  end
 end
