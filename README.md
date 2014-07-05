@@ -6,7 +6,6 @@ chef_attrdoc
 
 Extract documentation from chef cookbooks' attributes files and output it to the cookbook's README.md file.
 
-
 `chef_attrdoc` groups attribute initialization lines together with the comments immediately above them. Any lines containing an attribute initialization which are not separated by an empty line are considered a group. The comment immediately above them is assumed to describe the group of attributes below. Groups of attribute initialization lines which are not immediately preceded by a comment line are ignored and will not show up in the output.
 
 chef_attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
@@ -21,6 +20,8 @@ chef_attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
 `chef_attrdoc` will try to find an Attributes heading in the README.md file in that directory and replace its contents with the generated `attributes/default.rb` documentation.
 
 `chef_attrdoc` uses ruby's stdlib `ripper` module and so does not have any dependencies.
+
+`chef_attrdoc` currently requires `ruby >= 1.9`.
 
 ### Examples
 
