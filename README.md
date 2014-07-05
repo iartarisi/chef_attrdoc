@@ -1,6 +1,7 @@
 chef_attrdoc
 ============
 [![Gem Version](https://badge.fury.io/rb/chef_attrdoc.png)](http://badge.fury.io/rb/chef_attrdoc)
+[![Build Status](https://travis-ci.org/mapleoin/chef_attrdoc.svg?branch=master)](https://travis-ci.org/mapleoin/chef_attrdoc)
 [![Code Climate](https://codeclimate.com/github/mapleoin/chef_attrdoc.png)](https://codeclimate.com/github/mapleoin/chef_attrdoc)
 
 Extract documentation from chef cookbooks' attributes files and output it to the cookbook's README.md file.
