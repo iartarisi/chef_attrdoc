@@ -40,12 +40,11 @@ unless ARGV.empty?
 end
 
 begin
-  contents = ChefAttrdoc.attrs_contents dir_path
-  attrs = ChefAttrdoc::AttributesFile.new contents.first[1]
+  attrs = ChefAttrdoc.process_attributes dir_path
   if options[:stdout]
-    puts attrs.to_s
+    puts attrs
   else
-    ChefAttrdoc.write_readme attrs, options[:readme]
+    ChefAttrdoc.write_readme options[:readme], attrs
   end
 rescue Exception => e
   if options[:debug]

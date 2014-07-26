@@ -132,7 +132,9 @@ module ChefAttrdoc
     end
   end
 
-  def self.write_readme(attrs, readme)
+  # open the :readme: Markdown file and replace the 'Attributes' section
+  # with the contents of :parsed:
+  def self.write_readme(readme, parsed)
     File.open(readme, File::RDWR) do |f|
       # TODO find a cleaner way and do this in one step
       content = f.read
@@ -146,7 +148,7 @@ module ChefAttrdoc
         raise StandardError, "Could not find Attributes heading in #{readme}. Please make sure your README file has proper markdown formatting and includes an Attributes heading."
       end
 
-      updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', attrs.to_s
+      updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', parsed
       f.rewind
       f.write(updated)
       f.flush
@@ -178,7 +180,7 @@ module ChefAttrdoc
     output = []
     files_contents.each do |filename, contents|
       attrs = ChefAttrdoc::AttributesFile.new contents
-      output << "## #{filename}\n\n#{contents}"
+      output << "## #{filename}\n\n#{attrs}"
     end
 
     output.join("\n")

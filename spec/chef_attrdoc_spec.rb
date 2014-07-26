@@ -257,11 +257,9 @@ are nice
 Another header
 ==============
 README
-      ca = ChefAttrdoc::AttributesFile.new('')
-      allow(ca).to receive(:to_s).and_return('foo')
       allow(::File).to receive(:open).and_yield(readme)
       expect(readme).to receive(:write).with("\nAttributes\n==========\nfoo\n")
-      ChefAttrdoc.write_readme(ca, 'filename')
+      ChefAttrdoc.write_readme('filename', 'foo')
     end
   end
 
@@ -276,15 +274,18 @@ README
     it 'reads the files in the directory and processes them' do
       allow(ChefAttrdoc).to receive(:attrs_contents).with('foodir')
         .and_return([["file1.rb", "foo\n"], ["file3.rb", "baz\n"]])
+
+      allow_any_instance_of(ChefAttrdoc::AttributesFile).to receive(:to_s)
+        .and_return("qux\n")
       expect(ChefAttrdoc.process_attributes('foodir'))
         .to eq(<<-OUTPUT)
 ## file1.rb
 
-foo
+qux
 
 ## file3.rb
 
-baz
+qux
 OUTPUT
     end
   end
