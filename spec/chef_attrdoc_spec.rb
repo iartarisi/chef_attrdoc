@@ -271,4 +271,21 @@ README
         .to eq([["file1.rb", "foo\n"], ["file3.rb", "baz\n"]])
     end
   end
+
+  describe 'process_attributes' do
+    it 'reads the files in the directory and processes them' do
+      allow(ChefAttrdoc).to receive(:attrs_contents).with('foodir')
+        .and_return([["file1.rb", "foo\n"], ["file3.rb", "baz\n"]])
+      expect(ChefAttrdoc.process_attributes('foodir'))
+        .to eq(<<-OUTPUT)
+## file1.rb
+
+foo
+
+## file3.rb
+
+baz
+OUTPUT
+    end
+  end
 end

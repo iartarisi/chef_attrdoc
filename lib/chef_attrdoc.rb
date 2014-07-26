@@ -168,6 +168,20 @@ module ChefAttrdoc
 
     files_contents
   end
+
+  # takes a directory of attributes files and returns a string with
+  # Markdown content with the output of processing all the attributes
+  def self.process_attributes(dir)
+    files_contents = ChefAttrdoc.attrs_contents dir
+
+    output = []
+    files_contents.each do |filename, contents|
+      attrs = ChefAttrdoc::AttributesFile.new contents
+      output << "## #{filename}\n\n#{contents}"
+    end
+
+    output.join("\n")
+  end
 end
 
 def ignored_comments(content)
