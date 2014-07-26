@@ -268,7 +268,7 @@ README
   describe 'attrs_contents' do
     it 'reads the files in the directory and returns their contents' do
       expect(ChefAttrdoc.attrs_contents(['spec', 'fixtures']))
-        .to eq(["foo\n", "baz\n"])
+        .to eq([["file1.rb", "foo\n"], ["file3.rb", "baz\n"]])
     end
   end
 end

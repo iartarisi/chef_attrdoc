@@ -160,7 +160,7 @@ module ChefAttrdoc
 
     filenames.each do |f|
       begin
-        files_contents << IO.read(f)
+        files_contents << [File.basename(f), IO.read(f)]
       rescue Exception => e
         abort e.message
       end

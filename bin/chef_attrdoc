@@ -41,7 +41,7 @@ end
 
 begin
   contents = ChefAttrdoc.attrs_contents dir_path
-  attrs = ChefAttrdoc::AttributesFile.new contents.first
+  attrs = ChefAttrdoc::AttributesFile.new contents.first[1]
   if options[:stdout]
     puts attrs.to_s
   else
