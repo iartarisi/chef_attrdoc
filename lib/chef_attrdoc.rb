@@ -153,6 +153,21 @@ module ChefAttrdoc
       f.truncate(f.pos)
     end
   end
+
+  def self.attrs_contents(dir)
+    files_contents = []
+    filenames = Dir.glob(File.join(dir, '*.rb'))
+
+    filenames.each do |f|
+      begin
+        files_contents << IO.read(f)
+      rescue Exception => e
+        abort e.message
+      end
+    end
+
+    files_contents
+  end
 end
 
 def ignored_comments(content)

@@ -31,24 +31,17 @@ opt_parser = OptionParser.new do |opts|
   end
 end.parse!
 
-file_path = ["attributes", "default.rb"]
+dir_path = ["attributes"]
 unless ARGV.empty?
-  file_path.unshift ARGV[0]
+  dir_path.unshift ARGV[0]
   unless options[:stdout]
     options[:readme] = File.join(ARGV[0], options[:readme])
   end
 end
-file_path = File.join file_path
 
 begin
-  contents = IO.read(file_path)
-rescue Exception => e
-  puts e.message
-  exit
-end
-
-begin
-  attrs = ChefAttrdoc::AttributesFile.new contents
+  contents = ChefAttrdoc.attrs_contents dir_path
+  attrs = ChefAttrdoc::AttributesFile.new contents.first
   if options[:stdout]
     puts attrs.to_s
   else

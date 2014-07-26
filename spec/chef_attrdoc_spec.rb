@@ -264,4 +264,11 @@ README
       ChefAttrdoc.write_readme(ca, 'filename')
     end
   end
+
+  describe 'attrs_contents' do
+    it 'reads the files in the directory and returns their contents' do
+      expect(ChefAttrdoc.attrs_contents(['spec', 'fixtures']))
+        .to eq(["foo\n", "baz\n"])
+    end
+  end
 end
