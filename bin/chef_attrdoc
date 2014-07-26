@@ -52,7 +52,7 @@ begin
   if options[:stdout]
     puts attrs.to_s
   else
-    attrs.to_readme options[:readme]
+    ChefAttrdoc.write_readme attrs, options[:readme]
   end
 rescue Exception => e
   if options[:debug]

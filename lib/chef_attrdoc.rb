@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Copyright 2013, Ionuț Arțăriși <ionut@artarisi.eu>
+# Copyright 2013-2014, Ionuț Arțăriși <ionut@artarisi.eu>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -130,27 +130,27 @@ module ChefAttrdoc
       end
       strings.join
     end
+  end
 
-    def to_readme(readme)
-      File.open(readme, File::RDWR) do |f|
-        # XXX find a cleaner way and do this in one step
-        content = f.read
-        if content =~ /\nAttributes\s*=+\s*\n/
-          updated = content.gsub(/(.*\nAttributes\s*=+\s*\n)(?m:.+?)(\n.+\s*\n=+.*)/,
-            '\1CHEF_ATTRDOC_UPDATING_TEMPLATE\3')
-        elsif content =~ /\n[#]+\s*Attributes\s*\n/
-          updated = content.gsub(/(?<before>.*\n(?<header>[#]+)\s*Attributes\s*\n)(.+?)(?<after>\n\k<header>\s*\w+\s*\n.*)/m,
-            '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
-        else
-          raise StandardError, "Could not find Attributes heading in #{readme}. Please make sure your README file has proper markdown formatting and includes an Attributes heading."
-        end
-
-        updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', self.to_s
-        f.rewind
-        f.write(updated)
-        f.flush
-        f.truncate(f.pos)
+  def self.write_readme(attrs, readme)
+    File.open(readme, File::RDWR) do |f|
+      # TODO find a cleaner way and do this in one step
+      content = f.read
+      if content =~ /\nAttributes\s*=+\s*\n/
+        updated = content.gsub(/(.*\nAttributes\s*=+\s*\n)(?m:.+?)(\n.+\s*\n=+.*)/,
+          '\1CHEF_ATTRDOC_UPDATING_TEMPLATE\3')
+      elsif content =~ /\n[#]+\s*Attributes\s*\n/
+        updated = content.gsub(/(?<before>.*\n(?<header>[#]+)\s*Attributes\s*\n)(.+?)(?<after>\n\k<header>\s*\w+\s*\n.*)/m,
+          '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
+      else
+        raise StandardError, "Could not find Attributes heading in #{readme}. Please make sure your README file has proper markdown formatting and includes an Attributes heading."
       end
+
+      updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', attrs.to_s
+      f.rewind
+      f.write(updated)
+      f.flush
+      f.truncate(f.pos)
     end
   end
 end

@@ -18,7 +18,7 @@
 require 'chef_attrdoc'
 
 
-describe ChefAttrdoc do
+describe ChefAttrdoc::AttributesFile do
   ["TODO bar", "XXX foo bar", "NOTE(me) nasty bug",
     ":pragma-foodcritic: ~FC024 - won't fix this"].each do |comm|
     it "ignores \"#{comm}\" comment" do
@@ -243,7 +243,7 @@ foo = bar
 OUTPUT
   end
 
-  describe '#to_readme' do
+  describe 'write_readme' do
     it 'handles an Attributes section followed by a multiword header' do
       readme = double('file').as_null_object
       allow(readme).to receive(:read).and_return(<<-README)
@@ -261,7 +261,7 @@ README
       allow(ca).to receive(:to_s).and_return('foo')
       allow(::File).to receive(:open).and_yield(readme)
       expect(readme).to receive(:write).with("\nAttributes\n==========\nfoo\n")
-      ca.to_readme('filename')
+      ChefAttrdoc.write_readme(ca, 'filename')
     end
   end
 end
