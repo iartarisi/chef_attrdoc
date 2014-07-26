@@ -12,12 +12,12 @@ chef_attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
 
 ### Usage:
 
-```
-# gem install chef_attrdoc
-# chef_attrdoc ~/cookbooks/mycookbook
+```bash
+$ gem install chef_attrdoc
+$ chef_attrdoc ~/cookbooks/mycookbook
 ```
 
-`chef_attrdoc` will try to find an Attributes heading in the README.md file in that directory and replace its contents with the generated `attributes/default.rb` documentation.
+`chef_attrdoc` will try to find an Attributes heading in the README.md file in that directory and replace its contents with the generated attributes documentation. The attributes documentation is compiled from all the files in the cookbook's `attributes/` directory. All the files ending in `.rb` in that directory are considered to be attributes files.
 
 `chef_attrdoc` uses ruby's stdlib `ripper` module and so does not have any dependencies.
 
@@ -25,7 +25,50 @@ chef_attrdoc currently ignores *TODO*, *XXX*, *NOTE* and *foodcritic* comments.
 
 ### Examples
 
-Here are some example outputs from openstack chef cookbooks:
+```bash
+$ cat cookbook-example/attributes/default.rb
+```
+    # Copyright 1970, nobody
+
+    # this is the attribute
+    default['some']['attribute'] = 'foo'
+
+    default['this']['will']['be'] = 'ignored'
+
+    # NOTE code blocks without a comment are ignored as are those beginning
+    # NOTE with 'NOTE', 'XXX', 'TODO' or foodcritic comments
+
+    # a longer block of code
+    case something
+    when 'foo'
+      default['some']['foo'] = 'baz'
+    else
+      default['some']['foo'] = 'qux'
+    end
+```bash
+$ chef_attrdoc cookbook-example --stdout
+```
+    ```
+    ## default.rb
+
+    this is the attribute
+
+    ```ruby
+    default['some']['attribute'] = 'foo'
+    ```
+
+    a longer block of code
+
+    ```ruby
+    case something
+    when 'foo'
+      default['some']['foo'] = 'baz'
+    else
+      default['some']['foo'] = 'qux'
+    end
+    ```
+
+Here are some longer examples from openstack chef cookbooks:
 
 [openstack-compute attributes file](https://github.com/stackforge/cookbook-openstack-compute/blob/aa42f5c09a445cde7267e4b4d00a6ce893aa481e/attributes/default.rb) - [output](https://gist.github.com/mapleoin/6886586)
 
