@@ -139,10 +139,15 @@ module ChefAttrdoc
       # TODO find a cleaner way and do this in one step
       content = f.read
       if content =~ /\nAttributes\s*=+\s*\n/
-        updated = content.gsub(/(.*\nAttributes\s*=+\s*\n)(?m:.+?)(\n.+\s*\n=+.*)/,
-          '\1CHEF_ATTRDOC_UPDATING_TEMPLATE\3')
-      elsif content =~ /\n[#]+\s*Attributes\s*\n/
-        updated = content.gsub(/(?<before>.*\n(?<header>[#]+)\s*Attributes\s*\n)(.+?)(?<after>\n\k<header>\s*\w+\s*\n.*)/m,
+        updated = content.gsub(/(?<before>.*\nAttributes\s*=+\s*\n)(?m:.+?)(?<after>\n.+\s*\n=+.*)/,
+          '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
+
+        # XXX hack because I couldn't figure out how to get another
+        # newline in between the <before> and the content
+        updated.sub!('CHEF_ATTRDOC_UPDATING_TEMPLATE',
+          "\nCHEF_ATTRDOC_UPDATING_TEMPLATE")
+      elsif content =~ /\n\#+\s*Attributes\s*\n/
+        updated = content.gsub(/(?<before>.*\n\#+\s*Attributes\s*\n)(.+?)(?<after>\n\#+.*)/m,
           '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
       else
         raise StandardError, "Could not find Attributes heading in #{readme}. Please make sure your README file has proper markdown formatting and includes an Attributes heading."

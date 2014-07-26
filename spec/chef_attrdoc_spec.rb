@@ -20,9 +20,10 @@ require 'chef_attrdoc'
 
 describe ChefAttrdoc do
   describe '#write_readme' do
-    it 'handles an Attributes section followed by a multiword header' do
-      readme = double('file').as_null_object
-      allow(readme).to receive(:read).and_return(<<-README)
+    context 'using Attributes\n========== syntax' do
+      it 'handles an Attributes section followed by a multiword header' do
+        readme = double('file').as_null_object
+        allow(readme).to receive(:read).and_return(<<-README)
 
 Attributes
 ==========
@@ -32,10 +33,55 @@ are nice
 
 Another header
 ==============
+
+doc we won't touch
+
 README
-      allow(::File).to receive(:open).and_yield(readme)
-      expect(readme).to receive(:write).with("\nAttributes\n==========\nfoo\n")
-      ChefAttrdoc.write_readme('filename', 'foo')
+        allow(::File).to receive(:open).and_yield(readme)
+        expect(readme).to receive(:write).with(<<-README)
+
+Attributes
+==========
+
+foo
+
+Another header
+==============
+
+doc we won't touch
+
+README
+        ChefAttrdoc.write_readme('filename', "foo\n")
+      end
+    end
+    context 'using ### Attributes syntax' do
+      it 'handles an Attributes section followed by a multiword header' do
+        readme = double('file').as_null_object
+        allow(readme).to receive(:read).and_return(<<-README)
+
+## Attributes
+
+my attributes
+
+are nice
+
+## Another header
+
+doc we won't touch
+README
+        allow(::File).to receive(:open).and_yield(readme)
+        expect(readme).to receive(:write).with(<<-README)
+
+## Attributes
+
+foo
+
+## Another header
+
+doc we won't touch
+README
+        ChefAttrdoc.write_readme('filename', "foo\n")
+      end
     end
   end
 
