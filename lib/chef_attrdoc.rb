@@ -159,7 +159,7 @@ module ChefAttrdoc
   # return a list of [filename, file-contents] for each ruby file in :dir:
   def self.attrs_contents(dir)
     files_contents = []
-    filenames = Dir.glob(File.join(dir, '*.rb'))
+    filenames = Dir.glob(File.join(dir, '*.rb')).sort
 
     filenames.each do |f|
       begin
