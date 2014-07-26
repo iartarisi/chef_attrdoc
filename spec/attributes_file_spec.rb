@@ -28,7 +28,14 @@ describe ChefAttrdoc::AttributesFile do
 default[good] = 'comment'
 END
       ca = ChefAttrdoc::AttributesFile.new(text)
-      expect(ca.groups).to eq([["default[good] = 'comment'\n", "# good comment\n"]])
+      expect(ca.to_s).to eq(<<-OUTPUT)
+good comment
+
+```ruby
+default[good] = 'comment'
+```
+
+OUTPUT
     end
   end
 
@@ -41,14 +48,26 @@ default[bar] = 'baz'
 # second block
 node.set[baz] = 'qux'
 node.set[foo] = 'qux'
-node.set[bar = 'qux'
+node.set[bar] = 'qux'
 END
     ca = ChefAttrdoc::AttributesFile.new(text)
-    expect(ca.groups).to eq([
-        ["default[foo] = 'bar'\ndefault[bar] = 'baz'\n",
-          "# first block\n"],
-        ["node.set[baz] = 'qux'\nnode.set[foo] = 'qux'\nnode.set[bar = 'qux'\n",
-          "# second block\n"]])
+    expect(ca.to_s).to eq(<<-OUTPUT)
+first block
+
+```ruby
+default[foo] = 'bar'
+default[bar] = 'baz'
+```
+
+second block
+
+```ruby
+node.set[baz] = 'qux'
+node.set[foo] = 'qux'
+node.set[bar] = 'qux'
+```
+
+OUTPUT
   end
 
   it 'ignores code without comments' do
@@ -63,9 +82,21 @@ default[ignored] = false
 node.set[baz] = 'qux'
 END
     ca = ChefAttrdoc::AttributesFile.new(text)
-    expect(ca.groups).to eq([
-        ["default[foo] = 'bar'\ndefault[bar] = 'baz'\n", "# first block\n"],
-        ["node.set[baz] = 'qux'\n", "# second block\n"]])
+    expect(ca.to_s).to eq(<<-OUTPUT)
+first block
+
+```ruby
+default[foo] = 'bar'
+default[bar] = 'baz'
+```
+
+second block
+
+```ruby
+node.set[baz] = 'qux'
+```
+
+OUTPUT
   end
 
   it 'ignores the first comments in a file' do
