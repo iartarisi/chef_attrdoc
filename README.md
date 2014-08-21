@@ -74,6 +74,6 @@ $ chef_attrdoc cookbook-example --stdout
 
 Here are some longer examples from openstack chef cookbooks:
 
-[openstack-compute attributes file](https://github.com/stackforge/cookbook-openstack-compute/blob/aa42f5c09a445cde7267e4b4d00a6ce893aa481e/attributes/default.rb) - [output](https://gist.github.com/mapleoin/6886586)
+[openstack-identity attributes file](https://github.com/stackforge/cookbook-openstack-identity/blob/552488824aa720f08249bc4d19f5224e9382aa00/attributes/default.rb) - [output](https://gist.github.com/mapleoin/d211b29f68dd519a4878#attributes)
 
-[openstack-identity attributes file](https://github.com/stackforge/cookbook-openstack-identity/blob/2e6b8b9c6788ae28fbc362c77c53a51c040b49a6/attributes/default.rb) - [output](https://gist.github.com/mapleoin/6886493)
+[openstack-common attributes file](https://github.com/stackforge/cookbook-openstack-common/tree/f0e55b8742d9285742163d8c2633833dc6f4241c/attributes) - [output](https://gist.github.com/mapleoin/d211b29f68dd519a4878#attributes)
