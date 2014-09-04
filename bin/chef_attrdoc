@@ -23,8 +23,8 @@ require 'chef_attrdoc'
 options = {}
 
 opt_parser = OptionParser.new do |opts|
-  opts.banner = "Usage: chef_attrdoc.rb [DIR] [options]\n"
-  opts.banner << "DIR - cookbook directory - defaults to the current directory\n\n"
+  opts.banner = "Usage: chef_attrdoc [DIR] [options]\n"
+  opts.banner << "DIR - cookbook directory - defaults to the current directory\n"
 
   options[:readme] = "README.md"
   opts.on("-r", "--readme README",
