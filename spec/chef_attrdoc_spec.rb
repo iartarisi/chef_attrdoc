@@ -53,6 +53,42 @@ doc we won't touch
 README
         ChefAttrdoc.write_readme('filename', "foo\n")
       end
+
+      it 'normalizes space after an Attributes section' do
+        readme = double('file').as_null_object
+        allow(readme).to receive(:read).and_return(<<-README)
+
+Attributes
+==========
+
+
+
+my attributes
+
+are nice
+
+Another header
+==============
+
+doc we won't touch
+
+README
+        allow(::File).to receive(:open).and_yield(readme)
+        expect(readme).to receive(:write).with(<<-README)
+
+Attributes
+==========
+
+foo
+
+Another header
+==============
+
+doc we won't touch
+
+README
+        ChefAttrdoc.write_readme('filename', "foo\n")
+      end
     end
     context 'using ### Attributes syntax' do
       it 'handles an Attributes section followed by a multiword header' do
@@ -60,6 +96,35 @@ README
         allow(readme).to receive(:read).and_return(<<-README)
 
 ## Attributes
+my attributes
+
+are nice
+
+## Another header
+
+doc we won't touch
+README
+        allow(::File).to receive(:open).and_yield(readme)
+        expect(readme).to receive(:write).with(<<-README)
+
+## Attributes
+
+foo
+
+## Another header
+
+doc we won't touch
+README
+        ChefAttrdoc.write_readme('filename', "foo\n")
+      end
+
+      it 'normalizes space after an Attributes section' do
+        readme = double('file').as_null_object
+        allow(readme).to receive(:read).and_return(<<-README)
+
+## Attributes
+
+
 
 my attributes
 
