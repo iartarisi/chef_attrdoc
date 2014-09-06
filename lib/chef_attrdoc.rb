@@ -139,10 +139,10 @@ module ChefAttrdoc
       # TODO find a cleaner way and do this in one step
       content = f.read
       if content =~ /\nAttributes\s*=+\s*\n/
-        updated = content.gsub(/(?<before>.*\nAttributes\s*=+\s*?\n)\n*(?m:.+?)(?<after>\n.+\s*\n=+.*)/,
+        updated = content.sub(/(?<before>.*\nAttributes\s*=+\s*?\n)\n*(?m:.+?)(?<after>\n.+\s*\n=+.*)/,
           '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
       elsif content =~ /\n\#+\s*Attributes\s*\n/
-        updated = content.gsub(/(?<before>.*\n\#+\s*Attributes\s*?\n)\n*(.+?)(?<after>\n\#+.*)/m,
+        updated = content.sub(/(?<before>.*\n\#+\s*Attributes\s*?\n)\n*(.+?)(?<after>\n\#+.*)/m,
           '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
       else
         raise StandardError, "Could not find Attributes heading in #{readme}. "+
