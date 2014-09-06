@@ -145,7 +145,9 @@ module ChefAttrdoc
         updated = content.gsub(/(?<before>.*\n\#+\s*Attributes\s*?\n)\n*(.+?)(?<after>\n\#+.*)/m,
           '\k<before>CHEF_ATTRDOC_UPDATING_TEMPLATE\k<after>')
       else
-        raise StandardError, "Could not find Attributes heading in #{readme}. Please make sure your README file has proper markdown formatting and includes an Attributes heading."
+        raise StandardError, "Could not find Attributes heading in #{readme}. "+
+          "Please make sure your README file has proper markdown formatting "+
+          "and includes an Attributes heading."
       end
 
       updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', "\n" + parsed
