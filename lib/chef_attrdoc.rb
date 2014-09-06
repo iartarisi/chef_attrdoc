@@ -150,7 +150,12 @@ module ChefAttrdoc
           "and includes an Attributes heading."
       end
 
-      updated.sub! 'CHEF_ATTRDOC_UPDATING_TEMPLATE', "\n" + parsed
+      updated.sub!(
+        'CHEF_ATTRDOC_UPDATING_TEMPLATE',
+        # need to sanitize the second parameter, otherwise it can repeat
+        # parts of the original README
+        "\n" + parsed.gsub(/\\/, "\\\\\\"))
+
       f.rewind
       f.write(updated)
       f.flush
