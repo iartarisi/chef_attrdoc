@@ -29,6 +29,8 @@ It's that simple. Only one command to run and `chef_attrdoc` will know how to do
 
 ### Examples
 
+These are the two input files from a chef cookbook:
+
 ```bash
 $ cat cookbook-example/attributes/default.rb
 ```
@@ -49,10 +51,39 @@ $ cat cookbook-example/attributes/default.rb
     else
       default['some']['foo'] = 'qux'
     end
+
 ```bash
-$ chef_attrdoc cookbook-example --stdout
+$ cat cookbook-example/README.md
+```
+    chef_attrdoc example README
+    ===========================
+
+    This is just an example
+
+    Attributes
+    ==========
+    nothing here now
+
+
+    License
+    =======
+    This is usually important.
+
+This is the output README file after running:
+
+```bash
+$ chef_attrdoc cookbook-example
+$ cat cookbook-example/README.md
 ```
     ```
+    chef_attrdoc example README
+    ===========================
+
+    This is just an example
+
+    Attributes
+    ==========
+
     ## default.rb
 
     this is the attribute
@@ -70,6 +101,12 @@ $ chef_attrdoc cookbook-example --stdout
     else
       default['some']['foo'] = 'qux'
     end
+    ```
+
+
+    License
+    =======
+    This is usually important.
     ```
 
 Here are some longer examples from openstack chef cookbooks:
