@@ -133,8 +133,9 @@ module ChefAttrdoc
   end
 
   # open the :readme: Markdown file and replace the 'Attributes' section
-  # with the contents of :parsed:
-  def self.write_readme(readme, parsed)
+  # with the contents of :parsed: . If :dry_run: is `true`, the string
+  # will be returned instead of overwriting the :readme: file.
+  def self.write_readme(readme, parsed, dry_run=false)
     File.open(readme, File::RDWR) do |f|
       # TODO find a cleaner way and do this in one step
       content = f.read
@@ -156,10 +157,14 @@ module ChefAttrdoc
         # parts of the original README
         "\n" + parsed.gsub(/\\/, "\\\\\\"))
 
-      f.rewind
-      f.write(updated)
-      f.flush
-      f.truncate(f.pos)
+      if dry_run
+        return updated
+      else
+        f.rewind
+        f.write(updated)
+        f.flush
+        f.truncate(f.pos)
+      end
     end
   end
 

@@ -36,8 +36,15 @@ opt_parser = OptionParser.new do |opts|
   end
 
   opts.on("-s", "--stdout",
-    "Write output to stdout instead of the cookbook's README file") do |stdout|
+    "Write the attributes section to stdout instead of overwriting anything"
+    ) do |stdout|
     options[:stdout] = stdout
+  end
+
+  opts.on("--dry-run",
+    "Output the changed README.md to stdout instead of overwriting anything"
+    ) do |dry_run|
+    options[:dry_run] = dry_run
   end
 
   opts.on_tail("-d", "--debug", "Show tracebacks on errors") do |debug|
@@ -62,6 +69,8 @@ begin
   attrs = ChefAttrdoc.process_attributes dir_path
   if options[:stdout]
     puts attrs
+  elsif options[:dry_run]
+    puts ChefAttrdoc.write_readme options[:readme], attrs, true
   else
     ChefAttrdoc.write_readme options[:readme], attrs
   end
